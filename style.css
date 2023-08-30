@@ -1,0 +1,90 @@
+:root {
+  --bg-display-color: #e2e2e2;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+article {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  padding: 0.5rem;
+  border: 1px outset black;
+  border-radius: 0.25rem;
+  background-color: inherit;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--bg-display-color);
+}
+
+.calculator {
+  display: flex;
+  flex-direction: column;
+}
+
+.displays-container {
+  width: 100%;
+  border: 1px outset black;
+}
+
+.result-display,
+.enter-display {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+}
+
+.result-display {
+  background-color: var(--bg-display-color);
+  border-bottom: 1px outset black;
+}
+
+.buttons-container,
+.digits,
+.operators,
+.calculator {
+  gap: 0.5rem;
+}
+
+.buttons-container {
+  display: flex;
+}
+
+.digits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+}
+
+.operators {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+}
+
+button[data-content="ac"] {
+  grid-area: 4 / 1 / auto / auto;
+}
+
+button[data-content="="] {
+  grid-area: 4 / 2 / auto / auto;
+}
