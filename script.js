@@ -1,7 +1,12 @@
-// change .enter-display selector from div to input
-// - possibly allow the user to type numbers and operators
-// add onClick event listener for buttons
-// when user clicks, change input.value to textContent
+// add an onClick event listener for the '=' button
+// - call operate(calcValues.a, calcValues.operator, calcValues.b) function
+
+// add an onClick event listener for the 'ac' button
+// - iterate over the calcValues obj, set all values to null
+
+// wrap up input with container
+// add div.textContent '='
+// add div.textContent = result of operate() function
 
 const calcValues = {
   a: null,
@@ -12,7 +17,18 @@ const calcValues = {
 (function calculator() {
   safeClickValue();
   displayValues();
+  calc();
 })();
+
+function calc() {
+  const equalButton = [
+    ...document.querySelectorAll(".operators button"),
+  ].find((btn) => btn.textContent === "=");
+
+  equalButton.addEventListener("click", () => {
+    console.log(operate(calcValues.a, calcValues.operator, calcValues.b));
+  });
+}
 
 function displayValues() {
   const buttons = [...document.querySelectorAll("button")].filter(
