@@ -1,8 +1,7 @@
-// add onClick event listener on each button
-// - took textContent of each button
-// - safe textContent in obj
-// - - clear obj { a: null, operator: null, b: null }
-// - and put this object values inside the display
+// change .enter-display selector from div to input
+// - possibly allow the user to type numbers and operators
+// add onClick event listener for buttons
+// when user clicks, change input.value to textContent
 
 const calcValues = {
   a: null,
@@ -10,14 +9,33 @@ const calcValues = {
   b: null,
 };
 
-(function safeClickValue() {
-  const digitButtons = [...document.querySelectorAll(".digits button")];
+(function calculator() {
+  safeClickValue();
+  displayValues();
+})();
+
+function displayValues() {
+  const buttons = [...document.querySelectorAll("button")].filter(
+    (btn) => btn.textContent !== "=" && btn.textContent !== "ac"
+  );
+
+  const input = document.querySelector(".enter-display");
+
+  buttons.forEach((btn) =>
+    btn.addEventListener("click", () => {
+      input.value = input.value.concat(btn.textContent);
+    })
+  );
+}
+
+function safeClickValue() {
+  const digitButtons = document.querySelectorAll(".digits button");
 
   const operateButtons = [
     ...document.querySelectorAll(".operators button"),
   ].filter((btn) => btn.textContent !== "=" && btn.textContent !== "ac");
 
-  let clickValue = document.querySelector(".enter-display").textContent;
+  let clickValue = "";
 
   digitButtons.forEach((btn) =>
     btn.addEventListener("click", () => {
@@ -34,10 +52,10 @@ const calcValues = {
   operateButtons.forEach((btn) =>
     btn.addEventListener("click", () => {
       calcValues.operator = btn.textContent;
-      clickValue = '';
+      clickValue = "";
     })
   );
-})();
+}
 
 function operate(a, operator, b) {
   let result;
