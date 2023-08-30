@@ -50,6 +50,7 @@ button:hover {
 .enter-display {
   display: flex;
   flex-direction: column;
+  height: 1rem;
   padding: 0.5rem;
 }
 
