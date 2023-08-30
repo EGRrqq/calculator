@@ -1,8 +1,6 @@
-// add an onClick event listener for the '=' button
-// - call operate(calcValues.a, calcValues.operator, calcValues.b) function
-
 // add an onClick event listener for the 'ac' button
 // - iterate over the calcValues obj, set all values to null
+// - clear input.value
 
 // wrap up input with container
 // add div.textContent '='
@@ -18,7 +16,24 @@ const calcValues = {
   safeClickValue();
   displayValues();
   calc();
+  clearCalc();
 })();
+
+function clearCalc() {
+  const clearButton = [
+    ...document.querySelectorAll(".operators button"),
+  ].find((btn) => btn.textContent === "ac");
+
+  const input = document.querySelector(".enter-display");
+
+  clearButton.addEventListener("click", () => {
+    for (let key in calcValues) {
+      calcValues[key] = null;
+    }
+
+    input.value = '';
+  });
+}
 
 function calc() {
   const equalButton = [
