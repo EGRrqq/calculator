@@ -51,7 +51,7 @@ button:hover {
 
 .result-display,
 .enter-display {
-  height: 1rem;
+  min-height: 1rem;
   padding: 0.5rem;
 }
 
@@ -71,7 +71,8 @@ button:hover {
 .buttons-container,
 .digits,
 .operators,
-.calculator {
+.calculator,
+.result-display {
   gap: 0.5rem;
 }
 
