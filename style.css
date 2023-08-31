@@ -53,11 +53,11 @@ button:hover {
 .enter-display {
   min-height: 1rem;
   padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .result-display {
-  display: flex;
-  flex-direction: column;
   background-color: var(--bg-display-color);
   border-bottom: 1px outset black;
 }

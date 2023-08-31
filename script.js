@@ -1,4 +1,6 @@
-// after the user clicks on 'equal' button, all calcValues except result should be set to ''
+// validate user input
+// - calcValues !== ''
+// - avoid divide by 0
 
 const calcValues = {
   a: "",
@@ -10,9 +12,49 @@ const calcValues = {
 (function calculator() {
   safeClickValue();
   displayValues();
-  calc();
+  validateInput(calc);
   clearCalc();
 })();
+
+function validateInput(calc) {
+  const equalButton = [...document.querySelectorAll(".operators button")].find(
+    (btn) => btn.textContent === "="
+  );
+
+  const inputContainer = document.querySelector('.enter-display');
+  const inputError = document.createElement('div');
+
+  equalButton.addEventListener("click", () => {
+    if (
+      calcValues.a !== "" &&
+      calcValues.operator === "" &&
+      calcValues.b === ""
+    ) {
+      calcValues.result = calcValues.a;
+      
+      displayResult();
+      clearValues();
+      assignValue();
+    } else if (calcValues.operator === "/" && calcValues.b === "0") {
+      inputError.textContent = 'Division by zero is undefined';
+
+      inputContainer.appendChild(inputError);
+    } else if (calcValues.operator !== "" && calcValues.b === "") {
+      inputError.textContent = 'Malformed expression';
+
+      inputContainer.appendChild(inputError);
+    } else {
+      calc();
+    }
+  });
+}
+
+function assignValue() {
+  const input = document.querySelector("input");
+
+  calcValues.a = calcValues.result;
+  input.value = calcValues.a;
+}
 
 function clearValues() {
   Object.keys(calcValues)
@@ -69,25 +111,15 @@ function clearCalc() {
 }
 
 function calc() {
-  const equalButton = [...document.querySelectorAll(".operators button")].find(
-    (btn) => btn.textContent === "="
+  calcValues.result = operate(
+    parseInt(calcValues.a),
+    calcValues.operator,
+    parseInt(calcValues.b)
   );
 
-  const input = document.querySelector("input");
-
-  equalButton.addEventListener("click", () => {
-    calcValues.result = operate(
-      parseInt(calcValues.a),
-      calcValues.operator,
-      parseInt(calcValues.b)
-    );
-
-    displayResult();
-    clearValues();
-
-    calcValues.a = calcValues.result;
-    input.value = calcValues.a;
-  });
+  displayResult();
+  clearValues();
+  assignValue();
 }
 
 function displayValues() {
