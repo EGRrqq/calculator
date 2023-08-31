@@ -8,6 +8,7 @@
   margin: 0;
   padding: 0;
   border: 0;
+  font-size: large;
 }
 
 main {
@@ -40,6 +41,7 @@ button:hover {
 .calculator {
   display: flex;
   flex-direction: column;
+  width: 50%;
 }
 
 .displays-container {
@@ -49,15 +51,21 @@ button:hover {
 
 .result-display,
 .enter-display {
-  display: flex;
-  flex-direction: column;
   height: 1rem;
   padding: 0.5rem;
 }
 
 .result-display {
+  display: flex;
+  flex-direction: column;
   background-color: var(--bg-display-color);
   border-bottom: 1px outset black;
+}
+
+.enter-display {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .buttons-container,

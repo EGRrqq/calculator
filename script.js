@@ -1,15 +1,12 @@
-// add an onClick event listener for the 'ac' button
-// - iterate over the calcValues obj, set all values to null
-// - clear input.value
-
 // wrap up input with container
 // add div.textContent '='
 // add div.textContent = result of operate() function
 
 const calcValues = {
-  a: null,
-  operator: null,
-  b: null,
+  a: "",
+  operator: "",
+  b: "",
+  result: "",
 };
 
 (function calculator() {
@@ -19,29 +16,58 @@ const calcValues = {
   clearCalc();
 })();
 
-function clearCalc() {
-  const clearButton = [
-    ...document.querySelectorAll(".operators button"),
-  ].find((btn) => btn.textContent === "ac");
+function clearResult() {
+  const displayContainer = document.querySelector(".enter-display");
+  const items = [...document.querySelectorAll(".enter-display div")];
 
-  const input = document.querySelector(".enter-display");
+  for (let item of items) {
+    displayContainer.removeChild(item);
+  }
+}
+
+function displayResult() {
+  const displayContainer = document.querySelector(".enter-display");
+
+  const equalOperator = document.createElement("div");
+  const calcResult = document.createElement("div");
+
+  equalOperator.textContent = "=";
+  calcResult.textContent = calcValues.result;
+
+  displayContainer.appendChild(equalOperator);
+  displayContainer.appendChild(calcResult);
+}
+
+function clearCalc() {
+  const clearButton = [...document.querySelectorAll(".operators button")].find(
+    (btn) => btn.textContent === "ac"
+  );
+
+  const input = document.querySelector("input");
 
   clearButton.addEventListener("click", () => {
     for (let key in calcValues) {
-      calcValues[key] = null;
+      calcValues[key] = '';
     }
 
-    input.value = '';
+    input.value = "";
+    clearResult();
   });
 }
 
 function calc() {
-  const equalButton = [
-    ...document.querySelectorAll(".operators button"),
-  ].find((btn) => btn.textContent === "=");
+  const equalButton = [...document.querySelectorAll(".operators button")].find(
+    (btn) => btn.textContent === "="
+  );
 
   equalButton.addEventListener("click", () => {
-    console.log(operate(calcValues.a, calcValues.operator, calcValues.b));
+    calcValues.result = operate(
+      parseInt(calcValues.a),
+      calcValues.operator,
+      parseInt(calcValues.b)
+    );
+
+    displayResult();
   });
 }
 
@@ -50,11 +76,13 @@ function displayValues() {
     (btn) => btn.textContent !== "=" && btn.textContent !== "ac"
   );
 
-  const input = document.querySelector(".enter-display");
+  const input = document.querySelector("input");
 
   buttons.forEach((btn) =>
     btn.addEventListener("click", () => {
-      input.value = input.value.concat(btn.textContent);
+      input.value = Object.values(calcValues)
+        .filter((val) => val !== '')
+        .join(" ");
     })
   );
 }
@@ -66,16 +94,12 @@ function safeClickValue() {
     ...document.querySelectorAll(".operators button"),
   ].filter((btn) => btn.textContent !== "=" && btn.textContent !== "ac");
 
-  let clickValue = "";
-
   digitButtons.forEach((btn) =>
     btn.addEventListener("click", () => {
-      clickValue = clickValue.concat(btn.textContent);
-
-      if (calcValues.operator === null) {
-        calcValues.a = parseInt(clickValue);
+      if (calcValues.operator === "") {
+        calcValues.a = calcValues.a.concat(btn.textContent);
       } else {
-        calcValues.b = parseInt(clickValue);
+        calcValues.b = calcValues.b.concat(btn.textContent);
       }
     })
   );
@@ -83,7 +107,6 @@ function safeClickValue() {
   operateButtons.forEach((btn) =>
     btn.addEventListener("click", () => {
       calcValues.operator = btn.textContent;
-      clickValue = "";
     })
   );
 }
