@@ -1,6 +1,3 @@
-// add history for user calculations
-// - all nodes need pop up in .result-display
-// - after user clicks on 'equal' button input.value = calcValues.result
 // after the user clicks on 'equal' button, all calcValues except result should be set to ''
 
 const calcValues = {
@@ -16,6 +13,12 @@ const calcValues = {
   calc();
   clearCalc();
 })();
+
+function clearValues() {
+  Object.keys(calcValues)
+    .filter((val) => val !== "result")
+    .forEach((key) => (calcValues[key] = ""));
+}
 
 function clearResult() {
   const displayContainer = document.querySelector(".enter-display");
@@ -70,6 +73,8 @@ function calc() {
     (btn) => btn.textContent === "="
   );
 
+  const input = document.querySelector("input");
+
   equalButton.addEventListener("click", () => {
     calcValues.result = operate(
       parseInt(calcValues.a),
@@ -78,6 +83,10 @@ function calc() {
     );
 
     displayResult();
+    clearValues();
+
+    calcValues.a = calcValues.result;
+    input.value = calcValues.a;
   });
 }
 
@@ -142,7 +151,7 @@ function operate(a, operator, b) {
       break;
   }
 
-  return result;
+  return String(result);
 }
 
 function add(a, b) {
