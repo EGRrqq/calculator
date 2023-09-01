@@ -99,3 +99,7 @@ button[data-content="ac"] {
 button[data-content="="] {
   grid-area: 4 / 2 / auto / auto;
 }
+
+button[data-content="."] {
+  grid-area: auto / 2 / auto / 4;
+}

@@ -1,7 +1,3 @@
-// validate user input
-// - calcValues !== ''
-// - avoid divide by 0
-
 const calcValues = {
   a: "",
   operator: "",
@@ -21,26 +17,57 @@ function validateInput(calc) {
     (btn) => btn.textContent === "="
   );
 
-  const inputContainer = document.querySelector('.enter-display');
-  const inputError = document.createElement('div');
+  const inputContainer = document.querySelector(".enter-display");
+  const inputError = document.createElement("div");
 
   equalButton.addEventListener("click", () => {
     if (
+      calcValues.a === "." ||
+      calcValues.b === "." ||
+      (calcValues.a && calcValues.operator && calcValues.b === "") ||
+      (calcValues.a[1] === "." && calcValues.a.length === 2) ||
+      (calcValues.b[1] === "." && calcValues.b.length === 2)
+    ) {
+      return;
+    } else if (calcValues.b && calcValues.operator && calcValues.a === "") {
+      calcValues.a = "0";
+
+      calc();
+    } else if (calcValues.a.includes(".") && calcValues.b.includes(".")) {
+      let fixedNum;
+
+      calcValues.a.split(".")[1].length > calcValues.b.split(".")[1].length
+        ? (fixedNum = calcValues.a.split(".")[1].length)
+        : (fixedNum = calcValues.b.split(".")[1].length);
+
+      calcValues.result = parseFloat(countResult())
+        .toFixed(fixedNum)
+        .toString();
+
+      displayResult();
+      clearValues();
+      assignValue();
+    } else if (
+      (calcValues.a[0] === "." && calcValues.a.length === 2) ||
+      (calcValues.b[0] === "." && calcValues.b.length === 2)
+    ) {
+      calc();
+    } else if (
       calcValues.a !== "" &&
       calcValues.operator === "" &&
       calcValues.b === ""
     ) {
       calcValues.result = calcValues.a;
-      
+
       displayResult();
       clearValues();
       assignValue();
     } else if (calcValues.operator === "/" && calcValues.b === "0") {
-      inputError.textContent = 'Division by zero is undefined';
+      inputError.textContent = "Division by zero is undefined";
 
       inputContainer.appendChild(inputError);
     } else if (calcValues.operator !== "" && calcValues.b === "") {
-      inputError.textContent = 'Malformed expression';
+      inputError.textContent = "Malformed expression";
 
       inputContainer.appendChild(inputError);
     } else {
@@ -98,6 +125,7 @@ function clearCalc() {
     (btn) => btn.textContent === "ac"
   );
 
+  const periodBtn = document.querySelector('button[data-content="."]');
   const input = document.querySelector("input");
 
   clearButton.addEventListener("click", () => {
@@ -107,16 +135,20 @@ function clearCalc() {
 
     input.value = "";
     clearResult();
+    periodBtn.addEventListener("click", concatValues, true);
   });
 }
 
-function calc() {
-  calcValues.result = operate(
-    parseInt(calcValues.a),
+function countResult() {
+  return operate(
+    parseFloat(calcValues.a),
     calcValues.operator,
-    parseInt(calcValues.b)
+    parseFloat(calcValues.b)
   );
+}
 
+function calc() {
+  calcValues.result = countResult();
   displayResult();
   clearValues();
   assignValue();
@@ -138,26 +170,41 @@ function displayValues() {
   );
 }
 
+function concatValues(event) {
+  const periodBtn = document.querySelector('button[data-content="."]');
+
+  if (calcValues.operator === "") {
+    calcValues.a = calcValues.a.concat(event.target.textContent);
+  } else {
+    calcValues.b = calcValues.b.concat(event.target.textContent);
+  }
+
+  if (calcValues.a.split("").filter((val) => val === ".").length === 1) {
+    periodBtn.removeEventListener("click", concatValues);
+  }
+
+  if (calcValues.b.split("").filter((val) => val === ".").length === 1) {
+    periodBtn.removeEventListener("click", concatValues, true);
+  }
+}
+
 function safeClickValue() {
   const digitButtons = document.querySelectorAll(".digits button");
+  const periodBtn = document.querySelector('button[data-content="."]');
 
   const operateButtons = [
     ...document.querySelectorAll(".operators button"),
   ].filter((btn) => btn.textContent !== "=" && btn.textContent !== "ac");
 
-  digitButtons.forEach((btn) =>
-    btn.addEventListener("click", () => {
-      if (calcValues.operator === "") {
-        calcValues.a = calcValues.a.concat(btn.textContent);
-      } else {
-        calcValues.b = calcValues.b.concat(btn.textContent);
-      }
-    })
-  );
+  digitButtons.forEach((btn) => btn.addEventListener("click", concatValues));
 
   operateButtons.forEach((btn) =>
     btn.addEventListener("click", () => {
       calcValues.operator = btn.textContent;
+      
+      if (calcValues.a.includes(".")) {
+        periodBtn.addEventListener("click", concatValues, true);
+      }
     })
   );
 }
