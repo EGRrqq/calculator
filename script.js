@@ -179,11 +179,11 @@ function concatValues(event) {
     calcValues.b = calcValues.b.concat(event.target.textContent);
   }
 
-  if (calcValues.a.split("").filter((val) => val === ".").length === 1) {
-    periodBtn.removeEventListener("click", concatValues);
+  if (calcValues.a.includes(".") && calcValues.b === "") {
+    periodBtn.removeEventListener("click", concatValues, true);
   }
 
-  if (calcValues.b.split("").filter((val) => val === ".").length === 1) {
+  if (calcValues.b.includes(".")) {
     periodBtn.removeEventListener("click", concatValues, true);
   }
 }
@@ -196,12 +196,14 @@ function safeClickValue() {
     ...document.querySelectorAll(".operators button"),
   ].filter((btn) => btn.textContent !== "=" && btn.textContent !== "ac");
 
-  digitButtons.forEach((btn) => btn.addEventListener("click", concatValues));
+  digitButtons.forEach((btn) =>
+    btn.addEventListener("click", concatValues, true)
+  );
 
   operateButtons.forEach((btn) =>
     btn.addEventListener("click", () => {
       calcValues.operator = btn.textContent;
-      
+
       if (calcValues.a.includes(".")) {
         periodBtn.addEventListener("click", concatValues, true);
       }
