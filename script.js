@@ -247,6 +247,9 @@ function operate(a, operator, b) {
     case "/":
       result = divide(a, b);
       break;
+    case "%":
+      result = percentage(a, b);
+      break;
     default:
       result = "uuh";
       break;
@@ -269,4 +272,8 @@ function multiply(a, b) {
 
 function divide(a, b) {
   return a / b;
+}
+
+function percentage(a, b) {
+  return (a / 100) * b;
 }
