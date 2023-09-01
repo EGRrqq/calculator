@@ -7,6 +7,7 @@ const calcValues = {
 
 (function calculator() {
   safeClickValue();
+  backspaceButton();
   displayValues();
   validateInput(calc);
   clearCalc();
@@ -120,6 +121,20 @@ function displayResult() {
   displayContainer.appendChild(containerItem);
 }
 
+function backspaceButton() {
+  const backspaceBtn = document.querySelector('button[data-content="b"]');
+
+  backspaceBtn.addEventListener("click", () => {
+    if (calcValues.operator === "") {
+      calcValues.a = calcValues.a.slice(0, -1);
+    } else if (calcValues.b === "") {
+      calcValues.operator = calcValues.operator.slice(0, -1);
+    } else {
+      calcValues.b = calcValues.b.slice(0, -1);
+    }
+  });
+}
+
 function clearCalc() {
   const clearButton = [...document.querySelectorAll(".operators button")].find(
     (btn) => btn.textContent === "ac"
@@ -194,7 +209,12 @@ function safeClickValue() {
 
   const operateButtons = [
     ...document.querySelectorAll(".operators button"),
-  ].filter((btn) => btn.textContent !== "=" && btn.textContent !== "ac");
+  ].filter(
+    (btn) =>
+      btn.textContent !== "=" &&
+      btn.textContent !== "ac" &&
+      btn.textContent !== "b"
+  );
 
   digitButtons.forEach((btn) =>
     btn.addEventListener("click", concatValues, true)
