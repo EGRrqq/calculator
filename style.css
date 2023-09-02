@@ -27,7 +27,7 @@ article {
 }
 
 button {
-  padding: 0.5rem;
+  padding: 1rem;
   border: 1px outset black;
   border-radius: 0.25rem;
   background-color: inherit;
@@ -77,29 +77,88 @@ button:hover {
 }
 
 .buttons-container {
-  display: flex;
-}
-
-.digits {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
 }
 
+.digits,
 .operators {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  display: contents;
 }
 
 button[data-content="ac"] {
-  grid-area: 4 / 1 / auto / auto;
+  grid-area: 1 / 1;
+}
+
+button[data-content="/"] {
+  grid-area: 1 / 2;
+}
+
+button[data-content="*"] {
+  grid-area: 1 / 3;
+}
+
+button[data-content="b"] {
+  grid-area: 1 / 4;
+}
+
+button[data-content="-"] {
+  grid-area: 2 / 4;
+}
+
+button[data-content="+"] {
+  grid-area: 3 / 4;
 }
 
 button[data-content="="] {
-  grid-area: 4 / 2 / auto / auto;
+  grid-area: 4 / 4 / 6 / 4;
 }
 
 button[data-content="."] {
-  grid-area: auto / 2 / auto / 4;
+  grid-area: 5 / 3;
+}
+
+button[data-content="%"] {
+  grid-area: 5 / 1;
+}
+
+button[data-content="0"] {
+  grid-area: 5 / 2;
+}
+
+button[data-content="1"] {
+  grid-area: 4 / 1;
+}
+
+button[data-content="2"] {
+  grid-area: 4 / 2;
+}
+
+button[data-content="3"] {
+  grid-area: 4 / 3;
+}
+
+button[data-content="4"] {
+  grid-area: 3 / 1;
+}
+
+button[data-content="5"] {
+  grid-area: 3 / 2;
+}
+
+button[data-content="6"] {
+  grid-area: 3 / 3;
+}
+
+button[data-content="7"] {
+  grid-area: 2 / 1;
+}
+
+button[data-content="8"] {
+  grid-area: 2 / 2;
+}
+
+button[data-content="9"] {
+  grid-area: 2 / 3;
 }
